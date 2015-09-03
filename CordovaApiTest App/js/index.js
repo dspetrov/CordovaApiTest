@@ -205,6 +205,10 @@ var app = {
             navigator.accelerometer.getCurrentAcceleration(accelerationSuccess, accelerationError);
         }, 100);
         */
+
+        // ----------------------------------------------------------------------------------------------------
+        document.addEventListener("pause", onPause, false);
+        document.addEventListener("resume", onResume, false);
     },
 
     // Update DOM on a Received Event
@@ -219,6 +223,19 @@ var app = {
         console.log('Received Event: ' + id);
     }
 };
+
+function addInfo(text) {
+    var p = document.createElement("p");
+    p.textContent = text;
+    info.appendChild(p);
+}
+
+function getCurrentTime() {
+    var date = new Date();
+    return ("0" + date.getHours()).slice(-2) + ":" +
+        ("0" + date.getMinutes()).slice(-2) + ":" +
+        ("0" + date.getSeconds()).slice(-2);
+}
 
 // capture callback
 function captureSuccess(mediaFiles) {
@@ -236,4 +253,15 @@ function captureSuccess(mediaFiles) {
 // capture error callback
 function captureError(error) {
     navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+}
+
+function onPause() {
+    addInfo(getCurrentTime() + " -> Paused");
+    setTimeout(function () {
+        addInfo(getCurrentTime() + " -> Ten seconds have passed");
+    }, 10000);
+}
+
+function onResume() {
+    addInfo(getCurrentTime() + " -> Resumed");
 }
